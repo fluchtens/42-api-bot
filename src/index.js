@@ -24,6 +24,9 @@ bot.on("messageCreate", async (message) => {
 
 			const token = await getApiToken();
 			const user = await getUserInfo(token, args[1]);
+			if (!user) {
+				throw new Error("User not found");
+			}
 
 			const exampleEmbed = {
 				color: 0x0099ff,
@@ -49,7 +52,8 @@ bot.on("messageCreate", async (message) => {
 			message.reply({embeds: [exampleEmbed]});
 		}
 		catch (error) {
-			message.reply("Error: " + error.message);
+			message.reply("**Error:** " + error.message);
+			return ;
 		}
 	}
 });
