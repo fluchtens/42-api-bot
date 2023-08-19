@@ -1,4 +1,5 @@
-const axios = require("axios");
+const getApiToken = require("../utils/getApiToken");
+const getUserInfo = require("../utils/getUserInfo");
 
 module.exports = {
 	name: "userinfo",
@@ -38,42 +39,3 @@ module.exports = {
 		}
 	}
 };
-
-async function getApiToken() {
-	const response = await axios.post("https://api.intra.42.fr/oauth/token", {
-		grant_type: 'client_credentials',
-		client_id: process.env.API_UID,
-		client_secret: process.env.API_SECRET
-	});
-
-	if (response.status === 200) {
-		return (response.data.access_token);
-	} else {
-		throw new Error("Unable to retrieve API access token");
-	}
-}
-
-async function getUserInfo(token, login) {
-	const headers = {
-		"Authorization": `Bearer ${token}`
-	};
-
-	const params = {
-		"filter[login]": login
-	};
-
-	const response = await axios.get("https://api.intra.42.fr/v2/users", {
-		headers: headers,
-		params: params
-	});
-
-	if (response.status !== 200) {
-		throw new Error("Bad status code");
-	}
-
-	let userInfo = null;
-		if (response.data.length > 0) {
-		userInfo = response.data[0];
-	}
-	return (userInfo);
-}
