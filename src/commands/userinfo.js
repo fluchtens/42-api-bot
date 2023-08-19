@@ -10,7 +10,7 @@ module.exports = {
 			if (!user) {
 				throw new Error("User not found");
 			}
-			const exampleEmbed = {
+			const embed = {
 				color: 0x0099ff,
 				title: `__**${client.user.username} - Profile of ${user.displayname}**__`,
 				thumbnail: {
@@ -31,7 +31,7 @@ module.exports = {
 					icon_url: client.user.displayAvatarURL()
 				}
 			};
-			message.reply({embeds: [exampleEmbed]});
+			message.reply({embeds: [embed]});
 		}
 		catch (error) {
 			message.reply("**Error:** " + error.message);
