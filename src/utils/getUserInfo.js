@@ -19,7 +19,7 @@ async function getUserInfo(token, login) {
 	}
 
 	let userInfo = null;
-		if (response.data.length > 0) {
+	if (response.data.length > 0) {
 		userInfo = response.data[0];
 	}
 	return (userInfo);
