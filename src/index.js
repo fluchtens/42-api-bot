@@ -1,100 +1,17 @@
-const { Client } = require("discord.js");
-const axios = require("axios");
+const { Client, Collection } = require("discord.js");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const bot = new Client({ intents: 3276799 });
+const client = new Client({ intents: 3276799 });
 
-bot.once("ready", () => {
-	console.log(`${bot.user.username} is started!`)
-});
+client.commands = new Collection();
 
-bot.on("messageCreate", async (message) => {
-	if (message.author.bot) {
-		return ;
-	}
-
-	if (message.content.startsWith("!userinfo")) {
-		try {
-			const args = message.content.split(" ");
-			if (args.length !== 2) {
-				message.reply("Usage: !userinfo <login>");
-				return ;
-			}
-
-			const token = await getApiToken();
-			const user = await getUserInfo(token, args[1]);
-			if (!user) {
-				throw new Error("User not found");
-			}
-
-			const exampleEmbed = {
-				color: 0x0099ff,
-				title: `__**${bot.user.username} - Profile of ${user.displayname}**__`,
-				thumbnail: {
-					url: user.image.versions.small
-				},
-				fields: [
-					{ name: "🤷‍♂️  Name", value: `\`${user.displayname}\``, inline: false },
-					{ name: "📌  Login", value: `\`${user.login}\``, inline: false },
-					{ name: "📧  Email", value: `\`${user.email}\``, inline: false },
-					{ name: "🏊‍♂️  Pool year", value: `\`${user.pool_month} ${user.pool_year}\``, inline: false },
-					{ name: "👶  Creation date", value: `\`${new Date(user.created_at).toLocaleString()}\``, inline: false },
-					{ name: "🟠  Evaluation points", value: `\`${user.correction_point}\``, inline: false },
-					{ name: "💵  Wallet", value: `\`${user.wallet}\``, inline: false }
-				],
-				timestamp: new Date().toISOString(),
-				footer: {
-					text: bot.user.username,
-					icon_url: bot.user.displayAvatarURL()
-				}
-			};
-			message.reply({embeds: [exampleEmbed]});
-		}
-		catch (error) {
-			message.reply("**Error:** " + error.message);
-			return ;
-		}
-	}
-});
-
-async function getApiToken() {
-	const response = await axios.post("https://api.intra.42.fr/oauth/token", {
-		grant_type: 'client_credentials',
-		client_id: process.env.API_UID,
-		client_secret: process.env.API_SECRET
-	});
-
-	if (response.status === 200) {
-		return (response.data.access_token);
-	} else {
-		throw new Error("Unable to retrieve API access token");
-	}
+const handlers = {
+	events: require("./handlers/events"),
+	commands: require("./handlers/commands")
 }
 
-async function getUserInfo(token, login) {
-	const headers = {
-		"Authorization": `Bearer ${token}`
-	};
+handlers.events(client);
+handlers.commands(client);
 
-	const params = {
-		"filter[login]": login
-	};
-
-	const response = await axios.get("https://api.intra.42.fr/v2/users", {
-		headers: headers,
-		params: params
-	});
-
-	if (response.status !== 200) {
-		throw new Error("Bad status code");
-	}
-
-	let userInfo = null;
-		if (response.data.length > 0) {
-		userInfo = response.data[0];
-	}
-	return (userInfo);
-}
-
-bot.login(process.env.TOKEN);
+client.login(process.env.TOKEN);
