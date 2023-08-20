@@ -10,16 +10,19 @@ module.exports = {
 		console.log(`Ready! Logged in as ${client.user.tag}`)
 		client.user.setActivity("42 Network.", { type: ActivityType.Watching });
 
-		startUsersStatusMonitoring(client);
+		usersStatusMonitoring(client);
+		setInterval(() => {
+            usersStatusMonitoring(client);
+        }, 60000);
 	}
 };
 
-async function startUsersStatusMonitoring(client)
+async function usersStatusMonitoring(client)
 {
 	try {
 		const token = await getApiToken();
-		const usersList = ["cchabeau", "fluchten"];
-		const channel = client.channels.cache.get("1142761398640844901");
+		const usersList = ["cchabeau", "fluchten", "mgomes-d"];
+		const channel = client.channels.cache.get("1142781775786029128");
 
 		const embed = {
 			color: 0x0099ff,
@@ -50,7 +53,10 @@ async function startUsersStatusMonitoring(client)
 			}
             embed.fields.push({ name: userLogin, value: userStatus, inline: true });
 		}
-		await channel.send({ embeds: [embed] });
+
+		const storedMessage = await channel.messages.fetch("1142782708901224488");
+		await storedMessage.edit({ embeds: [embed] });
+		// await channel.send({ embeds: [embed] });
 	}
 	catch (error) {
 		console.log("Error: " + error.message)
