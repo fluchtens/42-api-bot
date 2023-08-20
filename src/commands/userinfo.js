@@ -9,7 +9,6 @@ module.exports = {
 			const token = await getApiToken();
 			const user = await getUserInfo(token, args[0]);
 			const userLocation = await getUserLocation(token, user.id);
-			console.log(userLocation);
 
 			let userLastConnection = "";
 			if (userLocation.end_at) {
