@@ -12,10 +12,12 @@ module.exports = {
 
 		usersStatusMonitoring(client);
 		setInterval(() => {
-            usersStatusMonitoring(client);
-        }, 60000);
+			usersStatusMonitoring(client);
+		}, 60000);
 	}
 };
+
+const storedUserStatus = {};
 
 async function usersStatusMonitoring(client)
 {
@@ -61,14 +63,54 @@ async function usersStatusMonitoring(client)
 			} else {
 				userStatus = `[${userLocation.host}](https://meta.intra.42.fr/clusters#${userLocation.host})`;
 			}
-            embed.fields.push({ name: userLogin, value: userStatus, inline: true });
+			embed.fields.push({ name: userLogin, value: userStatus, inline: true });
+			welcomeMessage(client, user, userLocation);
 		}
-
 		const storedMessage = await channel.messages.fetch("1142782708901224488");
 		await storedMessage.edit({ embeds: [embed] });
-		// await channel.send({ embeds: [embed] });
 	}
 	catch (error) {
 		console.log("Error: " + error.message)
 	}
+}
+
+async function welcomeMessage(client, user, userLocation)
+{
+	const channel = client.channels.cache.get("1142808107433611351");
+	let userLink = `[${user.login}](https://profile.intra.42.fr/users/${user.login})`;
+	let computerLink = `[${userLocation.host}](https://meta.intra.42.fr/clusters#${userLocation.host})`;
+
+	if (!userLocation.end_at && storedUserStatus[user.login] === "Unavailable") {
+		let embed = {
+			color: 0x32db65,
+			title: `**${client.user.username} - ${user.displayname} is available**`,
+			thumbnail: {
+				url: user.image.versions.small
+			},
+			description: `✅ ${userLink} has just connected to ${computerLink}`,
+			timestamp: new Date().toISOString(),
+			footer: {
+				text: client.user.username,
+				icon_url: client.user.displayAvatarURL()
+			},
+		};
+		await channel.send({ embeds: [embed] });
+	}
+	if (userLocation.end_at && storedUserStatus[user.login] === "Available") {
+		let embed = {
+			color: 0xeb4034,
+			title: `**${client.user.username} - ${user.displayname} is unavailable**`,
+			thumbnail: {
+				url: user.image.versions.small
+			},
+			description: `❌ ${userLink} has just disconnected form ${computerLink}`,
+			timestamp: new Date().toISOString(),
+			footer: {
+				text: client.user.username,
+				icon_url: client.user.displayAvatarURL()
+			},
+		};
+		await channel.send({ embeds: [embed] });
+	}
+	storedUserStatus[user.login] = userLocation.end_at ? "Unavailable" : "Available";
 }
