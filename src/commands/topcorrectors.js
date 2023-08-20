@@ -38,7 +38,6 @@ module.exports = {
 		}
 		catch (error) {
 			message.reply("**Error:** " + error.message);
-			return ;
 		}
 	}
 };

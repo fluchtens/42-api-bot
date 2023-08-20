@@ -2,6 +2,7 @@ const { ActivityType } = require("discord.js");
 const getApiToken = require("../utils/getApiToken");
 const getUserInfo = require("../utils/getUserInfo");
 const getUserLocation = require("../utils/getUserLocation");
+const Database = require("../handlers/database");
 
 module.exports = {
 	name: "ready",
@@ -23,19 +24,20 @@ async function usersStatusMonitoring(client)
 {
 	try {
 		const token = await getApiToken();
-		const usersList = [
-			"cortiz",
-			"mgomes-d",
-			"hgeissle",
-			"mel-faqu",
-			"fluchten",
-			"sde-smed",
-			"gmarchal",
-			"dfinn",
-			"ldrieske",
-			"romvan-d",
-			"rel-ouri"
-		];
+
+		const query = querytxt => {
+			return new Promise((resolve, reject) => {
+				Database.query(querytxt, (err, results) => {
+				if (err) {
+					reject(err);
+				}
+				resolve([results]);
+				});
+			});
+		};
+		const [results] = await query("SELECT login FROM presence");
+
+		const usersList = results.map(row => row.login);
 		const channel = client.channels.cache.get("1142781775786029128");
 
 		const embed = {
