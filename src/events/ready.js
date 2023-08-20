@@ -105,7 +105,7 @@ async function welcomeMessage(client, user, userLocation)
 			thumbnail: {
 				url: user.image.versions.small
 			},
-			description: `❌ ${userLink} has just disconnected form ${computerLink}`,
+			description: `❌ ${userLink} has just disconnected from ${computerLink}`,
 			timestamp: new Date().toISOString(),
 			footer: {
 				text: client.user.username,
