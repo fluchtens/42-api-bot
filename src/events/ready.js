@@ -21,7 +21,19 @@ async function usersStatusMonitoring(client)
 {
 	try {
 		const token = await getApiToken();
-		const usersList = ["cchabeau", "fluchten", "mgomes-d"];
+		const usersList = [
+			"cortiz",
+			"mgomes-d",
+			"hgeissle",
+			"mel-faqu",
+			"fluchten",
+			"sde-smed",
+			"gmarchal",
+			"dfinn",
+			"ldrieske",
+			"romvan-d",
+			"rel-ouri"
+		];
 		const channel = client.channels.cache.get("1142781775786029128");
 
 		const embed = {
@@ -39,10 +51,8 @@ async function usersStatusMonitoring(client)
 		};
 
 		for (const userName of usersList) {
+			await new Promise(resolve => setTimeout(resolve, 1000));
 			const user = await getUserInfo(token, userName);
-			if (!user) {
-				throw new Error("User not found");
-			}
 			const userLocation = await getUserLocation(token, user.id);
 			const userLogin = userLocation.end_at ? `❌ ${user.login}` : `✅ ${user.login}`;
 			let userStatus = "";

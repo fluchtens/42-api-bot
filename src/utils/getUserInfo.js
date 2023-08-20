@@ -22,6 +22,9 @@ async function getUserInfo(token, login) {
 	if (response.data.length > 0) {
 		userInfo = response.data[0];
 	}
+	if (!userInfo) {
+		throw new Error("User not found");
+	}
 	return (userInfo);
 }
 

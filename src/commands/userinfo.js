@@ -7,9 +7,7 @@ module.exports = {
 		try {
 			const token = await getApiToken();
 			const user = await getUserInfo(token, args[0]);
-			if (!user) {
-				throw new Error("User not found");
-			}
+
 			const embed = {
 				color: 0x0099ff,
 				title: `__**${client.user.username} - Profile of ${user.displayname}**__`,

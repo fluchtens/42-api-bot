@@ -7,12 +7,7 @@ module.exports = {
 	run: async (client, message, args) => {
 		try {
 			const token = await getApiToken();
-
 			const user = await getUserInfo(token, args[0]);
-			if (!user) {
-				throw new Error("User not found");
-			}
-
 			const correctionsData = await getAllCorrections(token, user.id);
 			const correctedUsers = getCorrectorsUsers(correctionsData, user.id);
 
