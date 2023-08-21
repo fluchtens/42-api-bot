@@ -38,7 +38,7 @@ async function usersStatusMonitoring(client)
 		const [results] = await query("SELECT login FROM presence");
 
 		const usersList = results.map(row => row.login);
-		const channel = client.channels.cache.get("1142781775786029128");
+		const channel = client.channels.cache.get(process.env.MONITORING_CHANNEL_ID);
 
 		const embed = {
 			color: 0x0099ff,
@@ -68,7 +68,7 @@ async function usersStatusMonitoring(client)
 			embed.fields.push({ name: userLogin, value: userStatus, inline: true });
 			welcomeMessage(client, user, userLocation);
 		}
-		const storedMessage = await channel.messages.fetch("1142782708901224488");
+		const storedMessage = await channel.messages.fetch(process.env.MONITORING_MESSAGE_ID);
 		await storedMessage.edit({ embeds: [embed] });
 	}
 	catch (error) {
@@ -78,7 +78,7 @@ async function usersStatusMonitoring(client)
 
 async function welcomeMessage(client, user, userLocation)
 {
-	const channel = client.channels.cache.get("1142808107433611351");
+	const channel = client.channels.cache.get(process.env.CONNECTION_CHANNEL_ID);
 	let userLink = `[${user.login}](https://profile.intra.42.fr/users/${user.login})`;
 	let computerLink = `[${userLocation.host}](https://meta.intra.42.fr/clusters#${userLocation.host})`;
 
