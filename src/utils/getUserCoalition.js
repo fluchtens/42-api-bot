@@ -1,17 +1,12 @@
 const axios = require("axios");
 
-async function getUserInfo(token, login) {
+async function getUserCoalition(token, userId) {
 	const headers = {
 		"Authorization": `Bearer ${token}`
 	};
 
-	const params = {
-		"filter[login]": login
-	};
-
-	const response = await axios.get("https://api.intra.42.fr/v2/users", {
+	const response = await axios.get(`https://api.intra.42.fr/v2/users/${userId}/coalitions/`, {
 		headers: headers,
-		params: params
 	});
 
 	if (response.status !== 200) {
@@ -22,10 +17,7 @@ async function getUserInfo(token, login) {
 	if (response.data.length > 0) {
 		data = response.data[0];
 	}
-	if (!data) {
-		throw new Error("User not found");
-	}
 	return (data);
 }
 
-module.exports = getUserInfo;
+module.exports = getUserCoalition;

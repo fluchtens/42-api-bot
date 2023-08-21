@@ -13,11 +13,11 @@ async function getUserLocation(token, userId) {
 		throw new Error("Bad status code");
 	}
 
-	let userLocation = null;
+	let data = null;
 	if (response.data.length > 0) {
-		userLocation = response.data[0];
+		data = response.data[0];
 	}
-	return (userLocation);
+	return (data);
 }
 
 module.exports = getUserLocation;
