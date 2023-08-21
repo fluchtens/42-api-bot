@@ -4,6 +4,8 @@ const getAllCorrections = require("../utils/getAllCorrections");
 
 module.exports = {
 	name: "topcorrections",
+	description: "Top 15 people corrected by <login>",
+	usage: "<login>",
 	run: async (client, message, args) => {
 		try {
 			const login = args[0];

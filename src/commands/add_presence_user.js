@@ -4,6 +4,8 @@ const Database = require("../handlers/database");
 
 module.exports = {
 	name: "add_presence_user",
+	description: "Add a user to the presence status system",
+	usage: "<login>",
 	run: async (client, message, args) => {
 		try {
 			const login = args[0];

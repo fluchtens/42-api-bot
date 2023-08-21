@@ -1,10 +1,12 @@
 module.exports = {
 	name: "help",
+	description: "Do you need some help?",
+	usage: "",
 	run: (client, message, args) => {
-		const embed = {
+		const infoEmbed = {
 			color: 0x0099ff,
-			title: `${client.user.username} - INFORMATIONS`,
-			description: "Hello, I'm a bot created in discord.js v14 that communicates with the 42 api.",
+			title: `${client.user.username} - Informations`,
+			description: "Hi, I'm a bot created in discord.js v14 that communicates with the 42 api.",
 			thumbnail: {
 				url: client.user.displayAvatarURL()
 			},
@@ -18,6 +20,26 @@ module.exports = {
 				icon_url: client.user.displayAvatarURL()
 			}
 		};
-		message.reply({embeds: [embed]});
+
+		const commandsEmbed = {
+			color: 0x0099ff,
+			title: `${client.user.username} - Commands`,
+			description: "",
+			thumbnail: {
+				url: client.user.displayAvatarURL()
+			},
+			timestamp: new Date().toISOString(),
+			footer: {
+				text: client.user.username,
+				icon_url: client.user.displayAvatarURL()
+			}
+		}
+
+		const commands = client.commands;
+		commands.forEach(cmd => {
+			commandsEmbed.description += `**!${cmd.name}**\n*${cmd.description}*\n\n`;
+		});
+
+		message.reply({embeds: [infoEmbed, commandsEmbed]});
 	}
 };

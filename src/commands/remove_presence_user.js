@@ -4,6 +4,8 @@ const Database = require("../handlers/database");
 
 module.exports = {
 	name: "remove_presence_user",
+	description: "Remove a user form the presence status system",
+	usage: "<login>",
 	run: async (client, message, args) => {
 		try {
 			const login = args[0];

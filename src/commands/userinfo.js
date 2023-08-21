@@ -5,6 +5,8 @@ const getUserCoalition = require("../utils/getUserCoalition");
 
 module.exports = {
 	name: "userinfo",
+	description: "Get information about an intra 42 user",
+	usage: "<login>",
 	run: async (client, message, args) => {
 		try {
 			const login = args[0];
