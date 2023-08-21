@@ -1,6 +1,6 @@
 module.exports = {
 	name: "help",
-	run: async (client, message, args) => {
+	run: (client, message, args) => {
 		const embed = {
 			color: 0x0099ff,
 			title: `${client.user.username} - INFORMATIONS`,
