@@ -1,6 +1,7 @@
 const getApiToken = require("../utils/getApiToken");
 const getUserInfo = require("../utils/getUserInfo");
 const getUserLocation = require("../utils/getUserLocation");
+const getUserCoalition = require("../utils/getUserCoalition");
 
 module.exports = {
 	name: "userinfo",
@@ -14,6 +15,7 @@ module.exports = {
 			const token = await getApiToken();
 			const user = await getUserInfo(token, login);
 			const userLocation = await getUserLocation(token, user.id);
+			const userCoalition = await getUserCoalition(token, user.id);
 
 			let userLastConnection = "";
 			if (userLocation.end_at) {
@@ -32,6 +34,7 @@ module.exports = {
 					{ name: "🤷‍♂️  Name", value: `\`${user.displayname}\``, inline: false },
 					{ name: "📌  Login", value: `\`${user.login}\``, inline: false },
 					{ name: "📧  Email", value: `\`${user.email}\``, inline: false },
+					{ name: "👪  Coalition", value: `\`${userCoalition.name}\``, inline: false },
 					{ name: "🟠  Evaluation points", value: `\`${user.correction_point}\``, inline: false },
 					{ name: "💵  Wallet", value: `\`${user.wallet}\``, inline: false },
 					{ name: "🏊‍♂️  Pool year", value: `\`${user.pool_month} ${user.pool_year}\``, inline: false },
