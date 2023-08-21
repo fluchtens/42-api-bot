@@ -6,8 +6,13 @@ module.exports = {
 	name: "userinfo",
 	run: async (client, message, args) => {
 		try {
+			const login = args[0];
+			if (!login) {
+				return (message.reply("Please enter a login!"))
+			}
+
 			const token = await getApiToken();
-			const user = await getUserInfo(token, args[0]);
+			const user = await getUserInfo(token, login);
 			const userLocation = await getUserLocation(token, user.id);
 
 			let userLastConnection = "";

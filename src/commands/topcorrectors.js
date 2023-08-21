@@ -6,8 +6,13 @@ module.exports = {
 	name: "topcorrectors",
 	run: async (client, message, args) => {
 		try {
+			const login = args[0];
+			if (!login) {
+				return (message.reply("Please enter a login!"))
+			}
+
 			const token = await getApiToken();
-			const user = await getUserInfo(token, args[0]);
+			const user = await getUserInfo(token, login);
 			const correctionsData = await getAllCorrections(token, user.id);
 			const correctedUsers = getCorrectorsUsers(correctionsData, user.id);
 
