@@ -20,10 +20,25 @@ module.exports = {
 			const userCoalition = await getUserCoalition(token, user.id);
 
 			let userLastConnection = "";
-			if (userLocation.end_at) {
-				userLastConnection = new Date(userLocation.end_at).toLocaleString();
+			if (userLocation) {
+				if (userLocation.end_at) {
+					userLastConnection = new Date(userLocation.end_at).toLocaleString();
+				} else {
+					userLastConnection = "Now";
+				}
 			} else {
 				userLastConnection = "Now";
+			}
+
+			let userCoalitionName = "";
+			if (userCoalition) {
+				if (userCoalition.name) {
+					userCoalitionName = userCoalition.name;
+				} else {
+					userCoalitionName = "No coalition";
+				}
+			} else {
+				userCoalitionName = "No coalition";
 			}
 
 			const embed = {
@@ -36,7 +51,7 @@ module.exports = {
 					{ name: "🤷‍♂️  Name", value: `\`${user.displayname}\``, inline: false },
 					{ name: "📌  Login", value: `\`${user.login}\``, inline: false },
 					{ name: "📧  Email", value: `\`${user.email}\``, inline: false },
-					{ name: "👪  Coalition", value: `\`${userCoalition.name}\``, inline: false },
+					{ name: "👪  Coalition", value: `\`${userCoalitionName}\``, inline: false },
 					{ name: "🟠  Evaluation points", value: `\`${user.correction_point}\``, inline: false },
 					{ name: "💵  Wallet", value: `\`${user.wallet}\``, inline: false },
 					{ name: "🏊‍♂️  Pool year", value: `\`${user.pool_month} ${user.pool_year}\``, inline: false },
