@@ -16,7 +16,9 @@ module.exports = {
 
 			const token = await getApiToken();
 			const user = await getUserInfo(token, login);
+			await new Promise(resolve => setTimeout(resolve, 1000));
 			const userLocation = await getUserLocation(token, user.id);
+			await new Promise(resolve => setTimeout(resolve, 1000));
 			const userCoalition = await getUserCoalition(token, user.id);
 
 			let userLastConnection = "";
