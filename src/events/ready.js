@@ -1,8 +1,9 @@
 const { ActivityType } = require("discord.js");
+const db = require("../handlers/database");
+const config = require("../../config.json");
 const getApiToken = require("../utils/getApiToken");
 const getUserInfo = require("../utils/getUserInfo");
 const getUserLocation = require("../utils/getUserLocation");
-const Database = require("../handlers/database");
 
 module.exports = {
 	name: "ready",
@@ -11,23 +12,23 @@ module.exports = {
 		console.log(`Ready! Logged in as ${client.user.tag}`)
 		client.user.setActivity("42 Network.", { type: ActivityType.Watching });
 
-		usersStatusMonitoring(client);
-		setInterval(() => {
-			usersStatusMonitoring(client);
-		}, 60000);
+		if (config.presence_monitoring.enable) {
+			usersPresenceMonitoring(client);
+			setInterval(() => {
+				usersPresenceMonitoring(client);
+			}, config.presence_monitoring.interval * 60000);
+		}
 	}
 };
 
-const storedUserStatus = {};
-
-async function usersStatusMonitoring(client)
+async function usersPresenceMonitoring(client)
 {
 	try {
 		const token = await getApiToken();
 
 		const query = querytxt => {
 			return new Promise((resolve, reject) => {
-				Database.query(querytxt, (err, results) => {
+				db.query(querytxt, (err, results) => {
 				if (err) {
 					reject(err);
 				}
@@ -38,7 +39,7 @@ async function usersStatusMonitoring(client)
 		const [results] = await query("SELECT login FROM presence");
 
 		const usersList = results.map(row => row.login);
-		const channel = client.channels.cache.get(process.env.MONITORING_CHANNEL_ID);
+		const channel = client.channels.cache.get(config.presence_monitoring.channel_id);
 
 		const embed = {
 			color: 0x0099ff,
@@ -66,9 +67,11 @@ async function usersStatusMonitoring(client)
 				userStatus = `[${userLocation.host}](https://meta.intra.42.fr/clusters#${userLocation.host})`;
 			}
 			embed.fields.push({ name: userLogin, value: userStatus, inline: true });
-			welcomeMessage(client, user, userLocation);
+			if (config.presence_logs.enable) {
+				welcomeMessage(client, user, userLocation);
+			}
 		}
-		const storedMessage = await channel.messages.fetch(process.env.MONITORING_MESSAGE_ID);
+		const storedMessage = await channel.messages.fetch(config.presence_monitoring.message_id);
 		await storedMessage.edit({ embeds: [embed] });
 	}
 	catch (error) {
@@ -76,9 +79,11 @@ async function usersStatusMonitoring(client)
 	}
 }
 
+const storedUserStatus = {};
+
 async function welcomeMessage(client, user, userLocation)
 {
-	const channel = client.channels.cache.get(process.env.CONNECTION_CHANNEL_ID);
+	const channel = client.channels.cache.get(config.presence_logs.channel_id);
 	let userLink = `[${user.login}](https://profile.intra.42.fr/users/${user.login})`;
 	let computerLink = `[${userLocation.host}](https://meta.intra.42.fr/clusters#${userLocation.host})`;
 
