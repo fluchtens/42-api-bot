@@ -7,7 +7,7 @@
 	},
 
 	"presence_logs": {
-		"enable": true,
+		"enable": false,
 		"channel_id": "1143059686002794530"
 	}
 }
