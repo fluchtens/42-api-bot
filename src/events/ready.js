@@ -21,6 +21,8 @@ module.exports = {
 	}
 };
 
+const storedUserStatus = {};
+
 async function usersPresenceMonitoring(client)
 {
 	try {
@@ -78,8 +80,6 @@ async function usersPresenceMonitoring(client)
 		console.log("Error: " + error.message)
 	}
 }
-
-const storedUserStatus = {};
 
 async function welcomeMessage(client, user, userLocation)
 {
