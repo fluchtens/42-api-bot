@@ -1,6 +1,11 @@
 # 42-discord-bot
 A discord bot that communicates with the 42 api.
 
+### Features
+- Activity monitoring system, a message that updates every x minutes to show the position of all the people configured in the database.
+- Activity log system, messages that are sent to a channel automatically when someone logs on or off a workstation.
+- Commands for interacting with a 42 user, use the help command to see the list of commands.
+
 ### Required to work
 - Node.js
 - npm
