@@ -1,5 +1,8 @@
 # 42-discord-bot
-A discord bot that communicates with the 42 api.
+
+### What's this about?
+This project is a Discord bot that communicates with API 42 to retrieve information from the intranet.  
+I created it in Discord.js v14 with the main aim of learning how APIs work.
 
 ### Features
 - Activity monitoring system, a message that updates every x minutes to show the position of all the people configured in the database.
