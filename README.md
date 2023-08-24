@@ -12,13 +12,15 @@ I created it in Discord.js v14 with the main aim of learning how APIs work.
 ### Required to work
 - Node.js
 - npm
-- pm2
+- mysql
+- pm2 (optional)
 
 ### Installation :
 - Clone the repository.
 - Run ```npm i``` to install the project dependencies.
 
 ### Configuration:
+- Create a mysql database by importing the database.sql file.
 - Create an .env file at the root of the directory and add the following content to it.
 ```env
 TOKEN=
