@@ -2,12 +2,13 @@
 	"presence_monitoring": {
 		"enable": true,
 		"interval": 5,
-		"channel_id": "1143059828105805895",
-		"message_id": "1143062649010126951"
+		"channel_id": "1142781775786029128",
+		"generate_new_message": false,
+		"message_id": "1144318065983639682"
 	},
 
 	"presence_logs": {
-		"enable": false,
-		"channel_id": "1143059686002794530"
+		"enable": true,
+		"channel_id": "1142808107433611351"
 	}
 }

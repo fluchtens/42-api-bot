@@ -73,8 +73,13 @@ async function usersPresenceMonitoring(client)
 				welcomeMessage(client, user, userLocation);
 			}
 		}
-		const storedMessage = await channel.messages.fetch(config.presence_monitoring.message_id);
-		await storedMessage.edit({ embeds: [embed] });
+		if (config.presence_monitoring.generate_new_message) {
+			await channel.send(`To enable the activity monitoring system, copy the id of the message below to \`presence_monitoring.message_id\` and set \`presence_monitoring.message_id\` to false.`);
+			await channel.send({ embeds: [embed] });
+		} else {
+			const storedMessage = await channel.messages.fetch(config.presence_monitoring.message_id);
+			await storedMessage.edit({ embeds: [embed] });
+		}
 	}
 	catch (error) {
 		console.log("Error: " + error.message)
