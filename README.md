@@ -1,4 +1,4 @@
-# 42-discord-bot
+# 42-api-bot
 
 ### What's this about?
 This project is a Discord bot that communicates with API 42 to retrieve information from the intranet.  
